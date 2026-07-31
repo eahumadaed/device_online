@@ -1,0 +1,54 @@
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.venv/
+venv/
+
+# Build outputs
+/target/
+build/
+dist/
+*.egg-info/
+
+# Local configuration and secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.crt
+*.pfx
+*.p12
+id_rsa*
+id_ed25519*
+
+# Vendor/proprietary binaries
+*.dll
+*.exe
+*.so
+*.dylib
+*.lib
+
+# Operational data
+*.csv
+*.tsv
+*.xlsx
+*.xls
+*.db
+*.sqlite
+*.sqlite3
+*.log
+*.pcap
+*.pcapng
+captures/
+analysis/
+csv_test/
+
+# Local/editor files
+.vscode/
+.idea/
+Thumbs.db
+Desktop.ini
