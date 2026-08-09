@@ -82,6 +82,9 @@ Dahua settings:
 - `DH_USERNAME`
 - `DH_USERKEY`
 - `DH_UDP_TIMEOUT_SECS`
+- `DH_PUBADDR_LOOKUP`, defaults to `1`. When enabled, Dahua online responses include
+  `PubAddr`, `pubaddr`, `pub_addr`, `pub_addr_raw`, `host_ip`, `LocalAddr`, and
+  `local_addr_raw` when the cloud NAT handshake exposes them.
 
 Intelbras settings:
 

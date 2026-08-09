@@ -99,17 +99,34 @@ class UdpTransport:
             sock.bind(("0.0.0.0", 0))
         return sock
 
+    def open_socket(self) -> socket.socket:
+        return self._socket()
+
+    def send_on_socket(
+        self,
+        sock: socket.socket,
+        host: str,
+        port: int,
+        payload: bytes,
+        *,
+        receive: bool = True,
+    ) -> bytes | None:
+        remote = self.resolver(host, port, sock.family)
+        sock.sendto(payload, remote)
+        if not receive:
+            return None
+        return self.receive_on_socket(sock, host, port)
+
+    def receive_on_socket(self, sock: socket.socket, host: str, port: int) -> bytes:
+        try:
+            data, _addr = sock.recvfrom(self.max_bytes)
+        except socket.timeout as exc:
+            raise TimeoutError(f"timeout waiting response from {host}:{port}") from exc
+        return data
+
     def send(self, host: str, port: int, payload: bytes, *, receive: bool = True) -> bytes | None:
         with self._socket() as sock:
-            remote = self.resolver(host, port, sock.family)
-            sock.sendto(payload, remote)
-            if not receive:
-                return None
-            try:
-                data, _addr = sock.recvfrom(self.max_bytes)
-            except socket.timeout as exc:
-                raise TimeoutError(f"timeout waiting response from {host}:{port}") from exc
-            return data
+            return self.send_on_socket(sock, host, port, payload, receive=receive)
 
     def request(self, host: str, port: int, payload: bytes) -> bytes:
         data = self.send(host, port, payload, receive=True)
